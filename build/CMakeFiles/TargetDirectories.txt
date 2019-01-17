@@ -1,0 +1,3 @@
+/Users/miau/simsamples/01hello/build/CMakeFiles/rebuild_cache.dir
+/Users/miau/simsamples/01hello/build/CMakeFiles/edit_cache.dir
+/Users/miau/simsamples/01hello/build/CMakeFiles/sdldemoapp.dir
