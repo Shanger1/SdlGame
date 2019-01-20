@@ -59,6 +59,8 @@ class Enemy
 		void render();
 
 		int mPosX, mPosY;
+
+		int mAcc, mVelAccelerated;
 		
 		SDL_Rect mCollider;
 
@@ -120,6 +122,9 @@ Enemy::Enemy()
 
 	mCollider.w = ENEMY_WIDTH;
 	mCollider.h = ENEMY_HEIGHT;
+
+	mAcc = 0;
+	mVelAccelerated = 0;
 
     mVelX = 0;
     mVelY = 0;
@@ -294,6 +299,7 @@ void Soldier::handleEvent( SDL_Event& e )
 
 void Soldier::move( SDL_Rect& enemy )
 {
+
     mPosX += mVelX;
 	mCollider.x = mPosX;
 	mCollider.y = mPosY;
@@ -314,6 +320,13 @@ void Soldier::render()
 
 void Enemy::move( SDL_Rect& soldier )
 {
+	mAcc += 1;
+		if(mAcc == 20 || mAcc == 30 || mAcc == 40 || mAcc == 50)
+		{
+			mVelAccelerated = mAcc/15;
+		}
+
+
 	mCollider.x = mPosX;
 	mCollider.y = mPosY;
 
@@ -323,7 +336,9 @@ void Enemy::move( SDL_Rect& soldier )
 		mPosY = 700;
 		collision = true;
     }else{
-		mPosX = ((int) (SDL_GetTicks() - startTime))*0.2f;
+		if (mAcc % 4 == 1) {
+			mPosX += 0.1 + mVelAccelerated;
+		}
 		mCollider.x = mPosX;
 	}
 
@@ -444,21 +459,25 @@ bool loadMedia()
 {
 	bool success = true;
 
+	//zrodlo: http://pixeljoint.com/pixelart/1350.htm
 	if( !gSoldierTexture.loadFromFile( "soldier.gif" ) )
 	{
 		printf( "Failed to load soldier texture!\n" );
 		success = false;
 	}
+	//zrodlo: http://pixeljoint.com/pixelart/1084.htm
 	if( !gEnemyTexture.loadFromFile( "enemy.gif" ) )
 	{
 		printf( "Failed to load enemy texture!\n" );
 		success = false;
 	}
+	//zrodlo: https://thenewinquiry.com/born-to-lose/
 	if (!gLoseScreenTexture.loadFromFile("loseScreen.png"))
 	{
 		printf("Failed to load loseScreen texture!\n");
 		success = false;
 	}
+	//zrodlo: http://pixeljoint.com/pixelart/85269.htm
 	if (!gBulletTexture.loadFromFile("bullet.gif"))
 	{
 		printf("Failed to load bullet texture!\n");
@@ -545,6 +564,7 @@ int main()
 
 			collision = false;
 
+
 			Soldier soldier;
 			Enemy enemy;
 			Bullet bullet;
@@ -589,6 +609,7 @@ int main()
 					bullet.render();			
 				}
 				SDL_RenderPresent( gRenderer );
+				SDL_Delay( 2 );
 			}
 		}
 	}
