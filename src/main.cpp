@@ -1,3 +1,4 @@
+//Korzystałem z poradnika LazyFoo
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_timer.h>
@@ -321,7 +322,7 @@ void Soldier::render()
 void Enemy::move( SDL_Rect& soldier )
 {
 	mAcc += 1;
-		if(mAcc == 20 || mAcc == 30 || mAcc == 40 || mAcc == 50)
+		if(mAcc == 10 || mAcc == 20 || mAcc == 30 || mAcc == 40 || mAcc == 50)
 		{
 			mVelAccelerated = mAcc/15;
 		}
@@ -459,25 +460,25 @@ bool loadMedia()
 {
 	bool success = true;
 
-	//zrodlo: http://pixeljoint.com/pixelart/1350.htm
+	//source: http://pixeljoint.com/pixelart/1350.htm
 	if( !gSoldierTexture.loadFromFile( "soldier.gif" ) )
 	{
 		printf( "Failed to load soldier texture!\n" );
 		success = false;
 	}
-	//zrodlo: http://pixeljoint.com/pixelart/1084.htm
+	//source: http://pixeljoint.com/pixelart/1084.htm
 	if( !gEnemyTexture.loadFromFile( "enemy.gif" ) )
 	{
 		printf( "Failed to load enemy texture!\n" );
 		success = false;
 	}
-	//zrodlo: https://thenewinquiry.com/born-to-lose/
+	//source: https://thenewinquiry.com/born-to-lose/
 	if (!gLoseScreenTexture.loadFromFile("loseScreen.png"))
 	{
 		printf("Failed to load loseScreen texture!\n");
 		success = false;
 	}
-	//zrodlo: http://pixeljoint.com/pixelart/85269.htm
+	//source: http://pixeljoint.com/pixelart/85269.htm
 	if (!gBulletTexture.loadFromFile("bullet.gif"))
 	{
 		printf("Failed to load bullet texture!\n");
@@ -575,6 +576,10 @@ int main()
 				if(collision == true){
 					while (SDL_PollEvent(&e) != 0)
 					{
+						if( e.type == SDL_QUIT )
+						{
+							quit = true;
+						}
 						loseScreen.handleEvent(e, collision);
 					}
 					loseScreen.render();
